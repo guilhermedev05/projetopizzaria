@@ -1,3 +1,5 @@
+let modalQtd = 1
+
 /* 
     A função select funciona como o query selector mas ela tem o nome reduzido, 
     o que facilita na leitura do código.
@@ -38,13 +40,28 @@ pizzaJson.map((item, index) => {
         e.preventDefault()
         /*
             Aqui nós pegamos o atributo data-key atráves do target ( que é o item que clicamos)
-             e armazenamos o valor numa variável.
+            e armazenamos o valor numa variável.
+            Atráves do método closest(), ele vai procurar próximo a div que selecionamos o valor
+            que colocamos como parâmetro da função.
         */
         let key = e.target.closest('.pizza-item').getAttribute('data-key')
+        // Sempre que o modal for aberto o ModalQTD ( QTD de pizzas ) vai ser setado em 1.
+        modalQtd = 1
 
         select('.pizzaBig img').src = pizzaJson[key].img
         select('.pizzaInfo h1').innerHTML = pizzaJson[key].name
         select('.pizzaInfo--desc').innerHTML = pizzaJson[key].description
+        select('.pizzaInfo--actualPrice').innerHTML = `R$ ${pizzaJson[key].price.toFixed(2)}`
+        select('.pizzaInfo--size.selected').classList.remove('selected')
+        selectAll('.pizzaInfo--size').forEach((size, sizeIndex)=> {
+            if(sizeIndex == 2){
+                size.classList.add('selected')
+            }
+            size.querySelector('span').innerHTML = pizzaJson[key].sizes[sizeIndex]
+
+        })
+        select('.pizzaInfo--qt').innerHTML = modalQtd
+
         /*
             Aqui fazemos um efeito para que quando clique na área do link ele abra o modal, com
             um efeito, para que não fique algo feio
