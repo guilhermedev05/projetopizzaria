@@ -133,12 +133,35 @@ selectAll('.pizzaInfo--size').forEach((size)=> {
 select('.pizzaInfo--addButton').addEventListener('click', () => {
     // Criamos a variável size para armazenar o tamanho da pizza
     let size = parseInt(select('.pizzaInfo--size.selected').getAttribute('data-key'))
-    // Feito isso, fazemos o envio das informações através de um objeto com as informações da pizza
-    cart.push({
-        id: pizzaJson[pizzaId].id,
-        size,
-        qtd: modalQtd,
-    })
+
+    /* 
+	    Esta variável armazena o id e o tamanho da pizza numa string, 
+        que serve como identificador.
+    */
+    let identifier = pizzaJson[pizzaId].id+'#'+ size
+    /* 
+        Esta variável armazena o index se o objeto identifier for igual à variável identifier,
+        Se não ele retorna -1 (que significa que não encontrou),
+    */
+    let key = cart.findIndex(item => item.identifier == identifier)
+
+    /*
+        Criamos uma verificação para saber se encontrou ou não o identifier, se sim, ele aumenta
+        a quantidade de pizzas de acordo com a pizza escolhida, se não, ele adiciona a pizza ao carrinho.
+    */
+   
+    if(key > -1){
+        cart[key].qtd += modalQtd
+    }else{
+        // Feito isso, fazemos o envio das informações através de um objeto com as informações da pizza
+        cart.push({
+            identifier,
+            id: pizzaJson[pizzaId].id,
+            size,
+            qtd: modalQtd,
+        })
+    }
+    
     
     closeModal()
 })
