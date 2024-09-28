@@ -162,6 +162,86 @@ select('.pizzaInfo--addButton').addEventListener('click', () => {
         })
     }
     
-    
+    updateCart()
     closeModal()
 })
+
+function updateCart(){
+    if(cart.length > 0){
+        select('aside').classList.add('show')
+        select('.cart').innerHTML = ''
+
+        let subtotal = 0
+        let desconto = 0
+        let total = 0
+        for(let i in cart){
+            /*
+                Aqui fazemos um loop para adicionar os itens do carrinho na variável
+                pizza item.
+            */
+            let pizzaItem = pizzaJson.find((item) => item.id == cart[i].id)
+            /*
+                Aqui clonamos a div modelo ( 'cart--item' ), que com ela poderemos
+                selecionar as divs filho.
+            */
+           subtotal += pizzaItem.price * cart[i].qtd
+            let cartItem = select('.models .cart--item').cloneNode(true)
+            /*
+                Aqui criamos uma variável que vai armanezar o tamanho de acordo com o escolhido
+                pelo usuário.
+            */
+            let pizzaSizeName
+            switch(cart[i].size){
+                case 0:
+                    pizzaSizeName = 'P'
+                    break
+                case 1:
+                    pizzaSizeName = 'M'
+                    break
+                case 2:
+                    pizzaSizeName = 'G'
+                    break
+            }
+            /*
+                Aqui construimos uma variável que vai juntar o nome da pizza o
+                seu tamanho em parênteses
+            */
+            let pizzaName = `${pizzaItem.name} (${pizzaSizeName})`
+
+            /*
+                Aqui preenchemos as informações das pizzas
+            */
+            cartItem.querySelector('img').src = pizzaItem.img
+            cartItem.querySelector('.cart--item-nome').innerHTML = pizzaName
+            cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].qtd
+            /*
+                Aqui adicionamos funcionalidade aos botões de aumentar e diminuir
+                a qtd de pizzas.
+            */
+            cartItem.querySelector('.cart--item-qtmenos').addEventListener('click', () => {
+                if(cart[i].qtd > 1){
+                    cart[i].qtd--
+                }else{
+                    cart.splice(i,1)
+                }
+                updateCart()
+            })
+            cartItem.querySelector('.cart--item-qtmais').addEventListener('click', () => {
+                cart[i].qtd++
+                updateCart()
+            })
+            select('.cart').append(cartItem)
+        }
+
+        desconto = subtotal * 0.1
+        total = subtotal - desconto
+        console.log(desconto)
+        console.log(subtotal)
+        console.log(total)
+        select('.subtotal span:last-child').innerHTML = `R$ ${subtotal.toFixed(2)}`
+        select('.desconto span:last-child').innerHTML = `R$ ${desconto.toFixed(2)}`
+        select('.total span:last-child').innerHTML = `R$ ${total.toFixed(2)}`
+    }else{
+        select('aside').classList.remove('show')
+    }
+}
