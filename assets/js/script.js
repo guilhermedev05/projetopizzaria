@@ -166,7 +166,24 @@ select('.pizzaInfo--addButton').addEventListener('click', () => {
     closeModal()
 })
 
+/*
+    Aqui, quando o usuário clica no carrinho, ele abre o menu com as pizzas, mudando o left para 0
+    pois o left 100vw faz com que o menu fique escondido, quando muda para 0 ele aparece.
+*/
+select('.menu-openner').addEventListener('click', () => {
+    select('aside').style.left = '0'
+})
+
+// Aqui fechamos o menu mobile ao clicar no X
+
+select('.menu-closer').addEventListener('click', () => {
+    select('aside').style.left = '100vw'
+})
+
 function updateCart(){
+    // Assim que atualizamos o carrinho, ele atualiza a qtd de pizzas no menu mob
+    select('.menu-openner span').innerHTML = cart.length
+
     if(cart.length > 0){
         select('aside').classList.add('show')
         select('.cart').innerHTML = ''
@@ -243,5 +260,6 @@ function updateCart(){
         select('.total span:last-child').innerHTML = `R$ ${total.toFixed(2)}`
     }else{
         select('aside').classList.remove('show')
+        select('aside').style.left = '100vw'
     }
 }
