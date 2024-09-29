@@ -102,14 +102,18 @@ selectAll('.pizzaInfo--cancelMobileButton, .pizzaInfo--cancelButton').forEach((i
 select('.pizzaInfo--qtmenos').addEventListener('click', () => {
     if(modalQtd > 1){
         modalQtd --
+        let actualPrice = pizzaJson[pizzaId].price * modalQtd
         select('.pizzaInfo--qt').innerHTML = modalQtd
+        select('.pizzaInfo--actualPrice').innerHTML = `R$ ${actualPrice.toFixed(2)}`
     }
 })
 
 // Este código adiciona incrementação de quantidade de pizzas
 select('.pizzaInfo--qtmais').addEventListener('click', () => {
     modalQtd ++
+    let actualPrice = pizzaJson[pizzaId].price * modalQtd
     select('.pizzaInfo--qt').innerHTML = modalQtd
+    select('.pizzaInfo--actualPrice').innerHTML = `R$ ${actualPrice.toFixed(2)}`
 })
 
 /* 
